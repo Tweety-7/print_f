@@ -46,6 +46,7 @@ typedef struct	s_print
 
 }			t_print;
 
+
 // typedef struct	s_print
 // {
 // 	int 	len;
@@ -92,6 +93,7 @@ void ft_print_o(const char *format, va_list ap, t_print *pr);
 const char				*ft_print_x(const char *format, va_list ap, t_print *pr);
 
 const char *ft_print_num(const char *format, char *str, t_print *pr);
+const char		*ft_print_f(const char *format, va_list ap, t_print *pr);
 
 int			ft_size_int_lu(unsigned long long n);
 #endif

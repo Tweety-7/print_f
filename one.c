@@ -1,109 +1,7 @@
 #include "libftprintf.h"
 #include <stdio.h>
 
-
-
-
-
-
-
-static char *ft_itoa_double(double num, t_print *pr)
-{
-	long long num_i;
-	char *str_0;
-	char *str;
-	int prec;
-
-
-
-	(*pr).prec = ((*pr).prec == 0 ? 6 : (*pr).prec);
-	prec = (*pr).prec;
-	if (num == 0)
-	{
-		str_0 = ft_strnew((*pr).prec + 1);
-		ft_memset(str_0, '0', (*pr).prec + 1);
-		ft_memset(str_0, '.', 1);
-		return (str_0);
-	}
-	else
-	{
-		while ((*pr).prec > 0)
-		{
-			num *= 10;
-			(*pr).prec--;
-		}
-		num_i = num + 0.5;
-		str_0 = ft_itoa_lu(num_i);
-	}
-	if (ft_size_int_lu(num_i) > prec)
-	{
-		ft_memset(str_0, '0', prec);
-		str_0[prec] = '\0';
-		(*pr).pr_4erez_0 = 1;
-	}
-	else
-		(*pr).pr_4erez_0 = 0;
-	str = ft_strjoin(".", str_0);
-	free(str_0);
-	return(str);
-}
-
-static char	*ft_strjoin_new(char *s1, char *s2)
-{
-	char	*new;
-	int		i;
-	int		len1;
-
-	if (!s1 || !s2)
-		return (NULL);
-	new = NULL;
-	new = (char*)malloc(sizeof(s1) * (ft_strlen(s1) + ft_strlen(s2) + 1));
-	if (!new)
-		return (NULL);
-	new[ft_strlen(s1) + ft_strlen(s2)] = '\0';
-	i = -1;
-	while (s1[++i])
-		new[i] = s1[i];
-	len1 = i;
-	i = 0;
-	while (s2[i])
-	{
-		new[len1 + i] = s2[i];
-		i++;
-	}
-	free(s1);
-	free(s2);
-	return (new);
-}
-
-const char		*ft_print_f(const char *format, va_list ap, t_print *pr)
-{
-	double		num;
-	char		*str;
-	char 		*str_2;
-	long long			str_i;
-
-	num = (double)va_arg(ap, double);
-	if (num < 0)
-		{
-			(*pr).leftzero = 1;
-			num = -num;
-		}
-	str_i = num;
-	num = num - str_i;
-	str_2 = ft_itoa_double(num, pr);
-	if ((*pr).pr_4erez_0 == 1)
-		str_i+=1;
-	str = ft_itoa_lu(str_i);
-	str = ft_strjoin_new(str, str_2);
-	ft_print_num(format, str, pr);
-	free(str);
-	return (format);
-}
-
-
-
-const char *ft_check(const char *format,va_list ap, t_print *pr)
+const char	*ft_check(const char *format,va_list ap, t_print *pr)
 {
 	if ((*pr).format == 1)
 		return (ft_print_str(format, va_arg(ap, char *), pr));
@@ -131,8 +29,9 @@ const char *ft_check(const char *format,va_list ap, t_print *pr)
 }
 
 
-const char *ft_format(const char *format, va_list ap, t_print *pr)
+const char	*ft_format(const char *format, va_list ap, t_print *pr)
 {
+	format++;
 	if (ft_strncmp(format, "%", 1) == 0)
 	{
 		(*pr).len += 1;
@@ -157,7 +56,7 @@ const char *ft_format(const char *format, va_list ap, t_print *pr)
 	return (format);
 }
 
-t_print *ft_make_0(int len)
+t_print		*ft_make_0(int len)
 {
 	t_print	*pr;
 
@@ -180,7 +79,18 @@ t_print *ft_make_0(int len)
 	return (pr);
 }
 
-int ft_printf(const char *format, ...)
+const char	*ft_format_0(const char *format, va_list ap, t_print *pr, int len)
+{
+	if (len)
+	{
+		free(pr);
+		pr = ft_make_0(len);
+	}
+	format = ft_format(format, ap, pr);
+	return (format);
+}
+
+int			ft_printf(const char *format, ...)
 {
 	va_list ap;
 	t_print	*pr;
@@ -194,25 +104,22 @@ int ft_printf(const char *format, ...)
 		if (ft_strncmp(format, "%", 1) == 0)
 		{
 			if (len)
-				{
-					free(pr);
-					pr = ft_make_0(len);
-				}
-			format++;
+			{
+				free(pr);
+				pr = ft_make_0(len);
+			}
 			format = ft_format(format, ap, pr);
+			//format = ft_format_0(format, ap, pr, len);
 		}
-		else // если не процент печатаем символ
+		else
 		{
-			ft_putchar(*format);
-			format++;
+			ft_putchar(*format++);
 			(*pr).len++;
 		}
 		len = (*pr).len;
-
 	}
 	va_end(ap);
-	//ft_memdel(pr);
 	len = (*pr).len;
-free(pr);	
-return(len);
+	free(pr);	
+	return (len);
 }

@@ -1,42 +1,71 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_str.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: qgilbert <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/08 21:21:21 by qgilbert          #+#    #+#             */
+/*   Updated: 2019/06/08 21:21:26 by qgilbert         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <libftprintf.h>
 
-char		*ft_print_str2(int len_str, t_print *pr)
-{//строка которая должна быть напечатана в зависимости от ширины и точности
-	char 	*str2;
-
-	if (((*pr).width && len_str <= (*pr).width) || (((*pr).prec < (*pr).width ) && (*pr).prec_p ))//|| ((*pr).prec < (*pr).width && (*pr).prec >  len_str) ) // создаем строку большего размера
+static char	*ft_str_2(char *str2, int len_str, t_print *pr)
+{
+	if (((*pr).width && len_str <= (*pr).width) ||
+		(((*pr).prec < (*pr).width) && (*pr).prec_p))
 	{
-		str2 = (char*)malloc(sizeof(char)*(*pr).width + 1);
-		str2[(*pr).width] = '\0';
+		str2 = ft_strnew((*pr).width + 1);
 		ft_memset(str2, ' ', (*pr).width);
 	}
-	else if ((*pr).prec_p && (*pr).prec <=  len_str)
+	else if ((*pr).prec_p && (*pr).prec <= len_str)
 	{
-			str2 = (char*)malloc(sizeof(char)*(*pr).prec + 1);
-			str2[(*pr).prec] = '\0';
-			ft_memset(str2, ' ', (*pr).prec);//printf("drty\n");
+		str2 = ft_strnew((*pr).prec + 1);
+		ft_memset(str2, ' ', (*pr).prec);
 	}
 	else if ((*pr).format == 9 && (*pr).prec_p && (*pr).prec > 0)
 	{
-		str2 = (char*)malloc(sizeof(char)*(*pr).prec + 1);
-		str2[(*pr).prec] = '\0';
+		str2 = ft_strnew((*pr).prec + 1);
 		ft_memset(str2, ' ', (*pr).prec);
 	}
-	else 
+	else
 	{
-		str2 = (char*)malloc(sizeof(char)*len_str+ 1);
-		str2[len_str] = '\0';
+		str2 = ft_strnew(len_str + 1);
 		ft_memset(str2, ' ', len_str);
 	}
-	if ((*pr).zero)// || (*pr).prec_p )
+	return (str2);
+}
+
+static char	*ft_st_cat(char *st_cat, t_print *pr, char *str, char *str2)
+{
+	if (ft_strncmp(str, "0x", 2) == 0)
+	{
+		st_cat = ft_strjoin(str, str2);
+	}
+	else if ((*pr).prec_p && ((*pr).prec >= 0) && ft_strncmp(str, "%", 1))
+	{
+		st_cat = ft_strnew((*pr).prec);
+		st_cat = ft_strncat(st_cat, str, (*pr).prec);
+	}
+	else
+		st_cat = ft_strdup(str);
+	return (st_cat);
+}
+
+char		*ft_print_str2(int len_str, t_print *pr)
+{
+	char	*str2;
+
+	str2 = NULL;
+	str2 = ft_str_2(str2, len_str, pr);
+	if ((*pr).zero)
 		ft_memset(str2, '0', (*pr).width);
-			//!!!//ft_memset(str2, '0', (*pr).width - len_str);
-	//printf("s2=%s|\n", str2);
 	if ((*pr).format == 9 && (*pr).prec_p && (*pr).prec > 0)
 		ft_memset(str2, '0', (*pr).prec);
 	return (str2);
 }
-
 
 static char	*ft_print_str3(char *str, t_print *pr)
 {
@@ -44,54 +73,27 @@ static char	*ft_print_str3(char *str, t_print *pr)
 	char	*st_cat;
 	char	*str2;
 
-
 	len_str = (ft_strncmp(str, "0x", 2) == 0 ? 0 : ft_strlen(str));
 	len_str = ft_strlen(str);
 	str2 = ft_print_str2(len_str, pr);
-	if (ft_strncmp(str, "0x", 2) == 0)
-	{
-		st_cat = ft_strjoin(str, str2);
-	}
-	else if ((*pr).prec_p && ((*pr).prec >= 0 ) && ft_strncmp(str, "%", 1)) //если точность есть и если она ноль && ft_strncmp(str, "%", 1)
-	//else if ((*pr).prec_p && ((*pr).prec > 0 )) //если точность есть и если она ноль && ft_strncmp(str, "%", 1)
-	{// надо обрезать по точности
-		//printf("str22 = %s\n", str);
-		st_cat = ft_strnew((*pr).prec);
-		st_cat = ft_strncat(st_cat, str, (*pr).prec);
-		//printf("st - %s\n", st_cat);
-	}
-	// else if ((*pr).prec_p && ((*pr).prec == 0))
-	// 	st_cat = ft_strdup("");
-	else 
-	 	{st_cat = ft_strdup(str);
-	 	 //printf("ddd\n");
-	 	}
-
-	if ((*pr).minus)//если по левому краю
+	st_cat = NULL;
+	st_cat = ft_st_cat(st_cat, pr, str, str2);
+	if ((*pr).minus)
 		ft_memcpy(str2, st_cat, ft_strlen(st_cat));
-	else 
+	else
 	{
 		if (ft_strncmp(str, "0x", 2))
 		{
-
-			len_str = ft_strlen(str2) == 0 ? 0 : ft_strlen(str2) - ft_strlen(st_cat);
-			//printf("str2 = %s, st_cat = %s, d = %d\n",str2, st_cat, len_str );
-			//len_str = ft_strlen(str2) - ft_strlen(st_cat);
+			len_str = ft_strlen(str2) == 0 ? 0 :
+			ft_strlen(str2) - ft_strlen(st_cat);
 			ft_memcpy(str2 + len_str, st_cat, ft_strlen(st_cat));
 		}
 		else
-		{
 			str2 = ft_strdup(st_cat);
-
-		}
 	}
 	free(st_cat);
 	return (str2);
 }
-
-  // ft_printf("%.0%");
-  // 1. (    0) --><--
-  // 2. (    1) -->%<--
 
 const char	*ft_print_str(const char *format, char *str, t_print *pr)
 {
@@ -103,14 +105,13 @@ const char	*ft_print_str(const char *format, char *str, t_print *pr)
 	{
 		str = ft_strdup("0");
 	}
-	else if ((*pr).format == 9 && str[0] == '0' )
+	else if ((*pr).format == 9 && str[0] == '0')
 		str = ft_strdup("0x");
 	else if (str[0] == '%')
 		str = ft_strdup("%");
 	else
 		str = ft_strdup(str);
 	str2 = ft_print_str3(str, pr);
-		//}
 	ft_putstr(str2);
 	(*pr).len += ft_strlen(str2);
 	free(str2);
