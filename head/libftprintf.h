@@ -36,6 +36,7 @@ typedef struct	s_print
 	int 	format; // от 0 до 11
 	int 	pr_x;
 	int 	pr_0;
+	int 	pr_4erez_0;
 
 	//unsigned long long	num;
 	//char ch; // используется??
@@ -83,4 +84,6 @@ const char *ft_print_str(const char *format, char *str, t_print *pr);
 
 
 const char *ft_print_num(const char *format, char *str, t_print *pr);
+
+int			ft_size_int_lu(unsigned long long n);
 #endif

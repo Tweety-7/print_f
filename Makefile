@@ -1,7 +1,7 @@
 NAME = libftprintf.a
 
 SRC = one.c ft_itoa_ll.c ft_int_base.c flag_check.c \
-	print_str.c print_num.c
+	print_str.c print_num.c format_check.c
 
 OMAKE = *.o
 

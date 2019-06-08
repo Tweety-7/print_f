@@ -267,30 +267,30 @@ ft_printf("%.1f\n", 0.99);
 	// printf("p = %3*s\n", 4, "qwerrty");
 // 	printf("mm = %d\n", ft_printf("m = %.*s\n", -5, "42"));
 // printf("pp = %d\n", printf("p = %.*s\n", -5, "42"));
-	// ft_printf("m = %f\n", 1.42);
-	// printf("p = %f\n", 1.42);
+	ft_printf("m = %f\n", 1.42);
+	printf("p = %f\n", 1.42);
 
-	// ft_printf("m = %F\n", 1.42);
-	// printf("p = %F\n", 1.42);
-
-
-	// ft_printf("m = %f\n", -1.42);
-	// printf("p = %f\n", -1.42);
+	ft_printf("m = %F\n", 1.42);
+	printf("p = %F\n", 1.42);
 
 
-	// ft_printf("m = %F\n", -1.42);
-	// printf("p = %F\n", -1.42);
-	// ft_printf("m = %f\n", 1444565444646.6465424242242);
-	// printf("p = %f\n", 1444565444646.6465424242242);
+	ft_printf("m = %f\n", -1.42);
+	printf("p = %f\n", -1.42);
 
-	// 	ft_printf("m = %f\n", -1444565444646.6465424242242454654);
-	// printf("p = %f\n", -1444565444646.6465424242242454654);	
 
-	// ft_printf("m = %F\n", 1.42);
-	// printf("p = %F\n", 1.42);
+	ft_printf("m = %F\n", -1.42);
+	printf("p = %F\n", -1.42);
+	ft_printf("m = %f\n", 1444565444646.6465424242242);
+	printf("p = %f\n", 1444565444646.6465424242242);
 
-	// ft_printf("m = %f\n", 0.0);
-	// printf("p = %f\n", 0.0);
+		ft_printf("m = %f\n", -1444565444646.6465424242242454654);
+	printf("p = %f\n", -1444565444646.6465424242242454654);	
+
+	ft_printf("m = %F\n", 1.42);
+	printf("p = %F\n", 1.42);
+
+	ft_printf("m = %f\n", 0.0);
+	printf("p = %f\n", 0.0);
 
 	// ft_printf("mc = %05c\n", 0);
 	// printf("pc = %05c\n", 0);

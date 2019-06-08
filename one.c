@@ -300,12 +300,12 @@ static char *ft_itoa_double(double num, t_print *pr)
 	long long num_i;
 	char *str_0;
 	char *str;
-	//int prec;
+	int prec;
 
 
 
 	(*pr).prec = ((*pr).prec == 0 ? 6 : (*pr).prec);
-	//prec = (*pr).prec;
+	prec = (*pr).prec;
 	if (num == 0)
 	{
 		str_0 = ft_strnew((*pr).prec + 1);
@@ -322,8 +322,22 @@ static char *ft_itoa_double(double num, t_print *pr)
 			//printf("%d\n", ft_itoa_lu(num));
 		}
 		num_i = num + 0.5;
+		//printf("num_i = %d\n", num_i);
 		str_0 = ft_itoa_lu(num_i);
+		//printf("str_0 = %s\n", str_0);
 	}
+	//printf("s_n = %d, s_p = %d\n", ft_size_int_lu(num_i), prec);
+	if (ft_size_int_lu(num_i) > prec)
+	{
+		ft_memset(str_0, '0', prec);
+		str_0[prec] = '\0';
+		// printf("str_0! = %s\n", str_0);
+		// printf("str_i!! = %d\n", str_i);		
+		(*pr).pr_4erez_0 = 1;
+	//	printf("str_i! = %d\n", str_i);
+	}
+	else
+		(*pr).pr_4erez_0 = 0;
 	str = ft_strjoin(".", str_0);
 	free(str_0);
 	return(str);
@@ -373,13 +387,11 @@ const char		*ft_print_f(const char *format, va_list ap, t_print *pr)
 	str_i = num;
 
 	num = num - str_i;
-	//printf("f = %f\n", num);
+
+	str_2 = ft_itoa_double(num, pr);// если стр2 перевалит через десяток добавим 1 к стр
+	if ((*pr).pr_4erez_0 == 1)
+		str_i+=1;
 	str = ft_itoa_lu(str_i);
-	// printf("str_i = %d\n", str_i);	
-	// printf("str? = %s\n", str);
-
-	str_2 = ft_itoa_double(num, pr);
-
 	str = ft_strjoin_new(str, str_2);
 	ft_print_num(format, str, pr);
 	free(str);
@@ -467,6 +479,7 @@ t_print *ft_make_0(int len)
 	(*pr).leftzero = 0;
 	(*pr).format = 0;
 	(*pr).pr_x = 0;
+	(*pr).pr_4erez_0 = 0;
 	return (pr);
 }
 

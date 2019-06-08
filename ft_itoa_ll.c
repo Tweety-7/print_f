@@ -53,7 +53,7 @@ char				*ft_itoa_ll(long long n)
 	return (new);
 }
 
-static int			ft_size_int_lu(unsigned long long n)
+int			ft_size_int_lu(unsigned long long n)
 {
 	int		i;
 
