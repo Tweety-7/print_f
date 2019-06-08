@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   flag_check.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: qgilbert <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/08 15:51:30 by qgilbert          #+#    #+#             */
+/*   Updated: 2019/06/08 15:51:32 by qgilbert         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <libftprintf.h>
 
 const char	*ft_flag_check(const char *format, t_print *pr)
@@ -45,7 +57,7 @@ const char	*ft_width_check(const char *format, t_print *pr, va_list ap)
 		if ((*pr).width < 0)
 			(*pr).width = 1;
 		format++;
-	}	
+	}
 	return (format);
 }
 
@@ -53,32 +65,31 @@ const char	*ft_precision_check(const char *format, t_print *pr, va_list ap)
 {
 	if (ft_strncmp(format, ".", 1) == 0)
 	{
-		format++;	
+		format++;
 		(*pr).prec_p = 1;
 		if (format[0] == '*')
 		{
 			(*pr).prec = (int)va_arg(ap, int);
 			if ((*pr).prec < 0)
 			{
-				(*pr).prec =  (*pr).width;
+				(*pr).prec = (*pr).width;
 				if ((*pr).zero != 1)
 					(*pr).prec_p = 0;
 			}
 			return (++format);
 		}
-
 		while (ft_isdigit(*format))
 		{
 			(*pr).prec = (*pr).prec * 10 + (*format - '0');
 			format++;
-		}	
+		}
 	}
 	return (format);
 }
 
 const char	*ft_mod_check(const char *format, t_print *pr)
 {
-	if (!ft_strncmp(format, "hh", 2) || !ft_strncmp(format, "ll", 2)) // точность есть
+	if (!ft_strncmp(format, "hh", 2) || !ft_strncmp(format, "ll", 2))
 	{
 		if (ft_strncmp(format, "hh", 2) == 0)
 			(*pr).mod = 4;
@@ -91,9 +102,9 @@ const char	*ft_mod_check(const char *format, t_print *pr)
 	else if (ft_strncmp(format, "l", 1) == 0)
 		(*pr).mod = 2;
 	else if (ft_strncmp(format, "j", 1) == 0)
-		(*pr).mod = 7;		
+		(*pr).mod = 7;
 	else if (ft_strncmp(format, "z", 1) == 0)
-		(*pr).mod = 6;		
+		(*pr).mod = 6;
 	else if (!ft_strncmp(format, "L", 1))
 		(*pr).mod = 3;
 	else

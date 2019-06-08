@@ -19,6 +19,9 @@
 # include "libft.h"
 
 #define MIN_LL -9223372036854775807
+#define MIN_INT -2147483648
+#define F format
+
 typedef struct	s_print
 {
 	int 	len;
@@ -82,6 +85,11 @@ const char *ft_format_check(const char *format, t_print *pr);
 char *ft_print_str2(int len_str, t_print *pr);
 const char *ft_print_str(const char *format, char *str, t_print *pr);
 
+const char *ft_print_d(const char *format, va_list ap, t_print *pr);
+const char *ft_print_c(const char *format, va_list ap, t_print *pr);
+const char *ft_print_u(const char *format, va_list ap, t_print *pr);
+void ft_print_o(const char *format, va_list ap, t_print *pr);
+const char				*ft_print_x(const char *format, va_list ap, t_print *pr);
 
 const char *ft_print_num(const char *format, char *str, t_print *pr);
 
