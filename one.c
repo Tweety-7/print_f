@@ -24,7 +24,7 @@ const char	*ft_check(const char *format, va_list ap, t_print *pr)
 		return (ft_print_x(format, ap, pr));
 	else if ((*pr).format == 4)
 		return (ft_print_d(format, ap, pr));
-	else if ((*pr).format == 5)
+	else if ((*pr).format == 5 || (*pr).format == 12)
 		ft_print_o(format, ap, pr);
 	else if ((*pr).format == 6 || (*pr).format == 11)
 		return (ft_print_u(format, ap, pr));

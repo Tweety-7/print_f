@@ -38,8 +38,11 @@ static char	*ft_str_2(char *str2, int len_str, t_print *pr)
 	return (str2);
 }
 
-static char	*ft_st_cat(char *st_cat, t_print *pr, char *str, char *str2)
+static char	*ft_st_cat(t_print *pr, char *str, char *str2)
 {
+	char	*st_cat;
+
+	st_cat = NULL;
 	if (ft_strncmp(str, "0x", 2) == 0)
 	{
 		st_cat = ft_strjoin(str, str2);
@@ -67,17 +70,13 @@ char		*ft_print_str2(int len_str, t_print *pr)
 	return (str2);
 }
 
-static char	*ft_print_str3(char *str, t_print *pr)
+static char	*ft_print_str3(int len_str, char *str, t_print *pr)
 {
-	int		len_str;
 	char	*st_cat;
 	char	*str2;
 
-	len_str = (ft_strncmp(str, "0x", 2) == 0 ? 0 : ft_strlen(str));
-	len_str = ft_strlen(str);
 	str2 = ft_print_str2(len_str, pr);
-	st_cat = NULL;
-	st_cat = ft_st_cat(st_cat, pr, str, str2);
+	st_cat = ft_st_cat(pr, str, str2);
 	if ((*pr).minus)
 		ft_memcpy(str2, st_cat, ft_strlen(st_cat));
 	else
@@ -89,7 +88,11 @@ static char	*ft_print_str3(char *str, t_print *pr)
 			ft_memcpy(str2 + len_str, st_cat, ft_strlen(st_cat));
 		}
 		else
+		{
+			if (str2)
+				free(str2);
 			str2 = ft_strdup(st_cat);
+		}
 	}
 	free(st_cat);
 	return (str2);
@@ -98,20 +101,18 @@ static char	*ft_print_str3(char *str, t_print *pr)
 const char	*ft_print_str(const char *format, char *str, t_print *pr)
 {
 	char	*str2;
+	int		len_str;
 
-	if ((!str || str == NULL) && (*pr).zero == 0)
+	if ((!str || str == NULL))
 		str = ft_strdup("(null)");
-	else if (!str || str == NULL)
-	{
-		str = ft_strdup("0");
-	}
 	else if ((*pr).format == 9 && str[0] == '0')
 		str = ft_strdup("0x");
 	else if (str[0] == '%')
 		str = ft_strdup("%");
 	else
 		str = ft_strdup(str);
-	str2 = ft_print_str3(str, pr);
+	len_str = ft_strlen(str);
+	str2 = ft_print_str3(len_str, str, pr);
 	ft_putstr(str2);
 	(*pr).len += ft_strlen(str2);
 	free(str2);

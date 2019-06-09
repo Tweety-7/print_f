@@ -55,10 +55,10 @@ static int	ft_str_len_v(t_print *pr, int len, int len_str)
 	if (((*pr).width - len_str - len) > (*pr).prec && (*pr).zero &&
 		!(*pr).minus)
 		len_str_v += ((*pr).width - len_str - len) - (*pr).prec;
-	if ((*pr).space)
-		len_str_v += 1;
 	if ((*pr).leftzero || (*pr).plus)
 		(*pr).space = 0;
+	if ((*pr).space)
+		len_str_v += 1;
 	if ((*pr).rr == 1 || (*pr).format == 9)
 		len_str_v = ft_len_str_v(len_str_v, pr);
 	if ((*pr).leftzero == 1 || ((*pr).plus && !(*pr).leftzero))
@@ -87,7 +87,8 @@ static char	*ft_print_num3(t_print *pr, t_len *len_l, char *str)
 		- (*pr).prec - (*pr).space;
 		if ((*len_l).len_0 > 0)
 			ft_memset(st_cat + (*len_l).len_z, '0', (*len_l).len_0);
-		(*len_l).len_z = (*len_l).len_z + (*len_l).len_0;
+		(*len_l).len_z = ((*len_l).len_0 > 0) ? (*len_l).len_z +
+		(*len_l).len_0 : (*len_l).len_z + 0;
 	}
 	num_set(pr, len_l, st_cat, str);
 	return (st_cat);

@@ -58,6 +58,8 @@ const char	*ft_format_check(const char *format, t_print *pr)
 		(*pr).format = 7;
 	else if (!ft_strncmp(format, "f", 1) || !ft_strncmp(format, "F", 1))
 		(*pr).format = 10;
+	else if (!ft_strncmp(format, "b", 1))
+		(*pr).format = 12;
 	else
 		ft_format_check_big(format, pr);
 	if (((*pr).format >= 7 && (*pr).format <= 9) || (*pr).format == 5)
