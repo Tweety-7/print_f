@@ -78,7 +78,7 @@ const char		*ft_print_d(const char *format, va_list ap, t_print *pr)
 	if (str[0] == '0' && !(*pr).mod && (*pr).prec_p && (*pr).prec == 0)
 		ft_print_str(format, "", pr);
 	else
-		ft_print_num(format, str, pr);
+		ft_print_num(str, pr);
 	if (str)
 		free(str);
 	return (format);

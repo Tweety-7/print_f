@@ -21,9 +21,9 @@ static void					print_o(t_print *pr, const char *format,
 		(*pr).rr = 0;
 	str = n == 0 ? ft_strdup("0") : ft_int_base(n, (*pr).format);
 	if (str[0] == '0' && (((*pr).prec_p && (*pr).prec == 0) || (*pr).rr == 1))
-		((*pr).rr == 1) ? ft_print_num(F, "\0", pr) : ft_print_str(F, "\0", pr);
+		((*pr).rr == 1) ? ft_print_num("\0", pr) : ft_print_str(F, "\0", pr);
 	else
-		ft_print_num(format, str, pr);
+		ft_print_num(str, pr);
 	free(str);
 }
 
@@ -65,7 +65,7 @@ static void					print_x(t_print *pr, const char *format,
 	if (str[0] == '0' && (((*pr).prec_p && (*pr).prec == 0) || (*pr).rr == 1))
 	{
 		if ((*pr).format == 9 && !(*pr).prec_p)
-			ft_print_num(format, str, pr);
+			ft_print_num(str, pr);
 		else if ((*pr).format == 9)
 			ft_print_str(format, "0", pr);
 		else if ((*pr).rr == 1)
@@ -74,7 +74,7 @@ static void					print_x(t_print *pr, const char *format,
 			ft_print_str(format, "\0", pr);
 	}
 	else
-		ft_print_num(format, str, pr);
+		ft_print_num(str, pr);
 	free(str);
 }
 

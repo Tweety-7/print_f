@@ -109,7 +109,7 @@ const char		*ft_print_f(const char *format, va_list ap, t_print *pr)
 		str_i += 1;
 	str = ft_itoa_lu(str_i);
 	str = ft_strjoin_new(str, str_2);
-	ft_print_num(format, str, pr);
+	ft_print_num(str, pr);
 	free(str);
 	return (format);
 }

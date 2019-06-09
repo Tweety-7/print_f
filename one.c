@@ -1,7 +1,18 @@
-#include "libftprintf.h"
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   one.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: qgilbert <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/06/09 12:01:44 by qgilbert          #+#    #+#             */
+/*   Updated: 2019/06/09 12:01:46 by qgilbert         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-const char	*ft_check(const char *format,va_list ap, t_print *pr)
+#include "libftprintf.h"
+
+const char	*ft_check(const char *format, va_list ap, t_print *pr)
 {
 	if ((*pr).format == 1)
 		return (ft_print_str(format, va_arg(ap, char *), pr));
@@ -9,14 +20,14 @@ const char	*ft_check(const char *format,va_list ap, t_print *pr)
 		return (ft_print_d(format, ap, pr));
 	else if ((*pr).format == 3)
 		return (ft_print_c(format, ap, pr));
-	else if ((*pr).format == 9)	
+	else if ((*pr).format == 9)
 		return (ft_print_x(format, ap, pr));
 	else if ((*pr).format == 4)
 		return (ft_print_d(format, ap, pr));
 	else if ((*pr).format == 5)
 		ft_print_o(format, ap, pr);
 	else if ((*pr).format == 6 || (*pr).format == 11)
-		return (ft_print_u(format, ap, pr));	
+		return (ft_print_u(format, ap, pr));
 	else if ((*pr).format == 7)
 		return (ft_print_x(format, ap, pr));
 	else if ((*pr).format == 8)
@@ -27,7 +38,6 @@ const char	*ft_check(const char *format,va_list ap, t_print *pr)
 		(*pr).net = 1;
 	return (format);
 }
-
 
 const char	*ft_format(const char *format, va_list ap, t_print *pr)
 {
@@ -56,17 +66,19 @@ const char	*ft_format(const char *format, va_list ap, t_print *pr)
 	return (format);
 }
 
-t_print		*ft_make_0(int len)
+t_print		*ft_make_0(int len, t_print *pr_old)
 {
 	t_print	*pr;
 
+	if (pr_old)
+		free(pr_old);
 	pr = (t_print*)malloc(sizeof(t_print));
 	(*pr).len = len;
 	(*pr).minus = 0;
 	(*pr).width = 0;
 	(*pr).prec_p = 0;
 	(*pr).prec = 0;
-	(*pr).net = 0; 
+	(*pr).net = 0;
 	(*pr).rr = 0;
 	(*pr).space = 0;
 	(*pr).plus = 0;
@@ -79,47 +91,30 @@ t_print		*ft_make_0(int len)
 	return (pr);
 }
 
-const char	*ft_format_0(const char *format, va_list ap, t_print *pr, int len)
-{
-	if (len)
-	{
-		free(pr);
-		pr = ft_make_0(len);
-	}
-	format = ft_format(format, ap, pr);
-	return (format);
-}
-
 int			ft_printf(const char *format, ...)
 {
 	va_list ap;
 	t_print	*pr;
-	int len;
+	int		len;
 
 	va_start(ap, format);
-	len = 0;
-	pr = ft_make_0(len);
+	pr = ft_make_0(0, NULL);
 	while (*format)
 	{
 		if (ft_strncmp(format, "%", 1) == 0)
 		{
-			if (len)
-			{
-				free(pr);
-				pr = ft_make_0(len);
-			}
+			if ((*pr).len)
+				pr = ft_make_0((*pr).len, pr);
 			format = ft_format(format, ap, pr);
-			//format = ft_format_0(format, ap, pr, len);
 		}
 		else
 		{
 			ft_putchar(*format++);
 			(*pr).len++;
 		}
-		len = (*pr).len;
 	}
 	va_end(ap);
 	len = (*pr).len;
-	free(pr);	
+	free(pr);
 	return (len);
 }
