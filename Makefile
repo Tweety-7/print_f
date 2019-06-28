@@ -24,30 +24,26 @@ OBJS = $(addprefix $(OBJDIR), $(SRC:.c=.o))
 
 HEAD = ./head
 
-LIBFT = libft/
+LIBFT = ./libft
 
 LIBFT_I = ./libft/libft.a
 
 GCC_FLAGS = gcc  -Wall -Wextra -Werror
 
-all: objects lft $(NAME)
-
-objects:
-	@mkdir -p $(OBJDIR)
-
-lft:
-	@make -C $(LIBFT)
+all: $(NAME)
 
 $(OBJDIR)%.o:$(SRCDIR)%.c
+	@mkdir -p $(OBJDIR)
 	$(GCC_FLAGS) -I $(HEAD) -o $@ -c $<
 
 $(NAME):$(OBJS)
-	@cp libft/libft.a $(NAME)
+	@make -C $(LIBFT)
+	@cp $(LIBFT_I) $(NAME)
 	@ar rc $(NAME) $(OBJS)
 	@ranlib $(NAME)
 
 clean:
-	@/bin/rm -rf $(OBJS) 
+	@/bin/rm -rf $(OBJDIR) 
 	@make -C $(LIBFT) clean
 
 fclean: clean
