@@ -6,7 +6,7 @@
 #    By: qgilbert <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/03 21:57:28 by qgilbert          #+#    #+#              #
-#    Updated: 2019/04/12 17:37:55 by qgilbert         ###   ########.fr        #
+#    Updated: 2019/06/12 18:30:13 by kwalter          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,20 +71,33 @@ SRC = ft_memset.c\
 	ft_lstiter.c\
 	ft_lstmap.c
 
-OMAKE = *.o
+OBJ = $(addprefix $(OBJDIR), $(SRC:.c=.o))
 
-HEAD = libft.h
+GCC_FLAGS = gcc -Wall -Wextra -Werror
 
-all: $(NAME)
+INCDIR = ../head/
 
-$(NAME):
-	@gcc -c $(SRC) -I$(HEAD)  -Wall -Wextra -Werror
-	@ar rc $(NAME) $(OMAKE)
-	
+OBJDIR = ./obj/
+
+SRCDIR = ./source/
+
+all: obj $(NAME) 
+
+
+obj:
+	@mkdir -p $(OBJDIR)
+
+$(OBJDIR)%.o:$(SRCDIR)%.c
+	$(GCC_FLAGS) -I $(INCDIR) -o $@ -c $<
+
+$(NAME): $(OBJ)	
+	@ar rc $(NAME) $(OBJ)
+	@ranlib $(NAME)
+
 clean:
-	@rm -f $(OMAKE)
+	/bin/rm -rf $(OBJDIR)
 
 fclean: clean
-	@rm -f $(NAME)
-
+	/bin/rm -f $(NAME)
+	
 re: fclean all

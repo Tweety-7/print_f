@@ -45,9 +45,9 @@ typedef struct	s_print
 	int			net : 2;
 	int			leftzero : 2;
 	int			format : 5;
-	int			pr_x : 1;
-	int			pr_0 : 1;
-	int			pr_4erez_0 : 1;
+	int			pr_x : 2;
+	int			pr_0 : 2;
+	int			pr_4erez_0 : 2;
 }				t_print;
 
 const char		*ft_format(const char *format, va_list ap, t_print *pr);

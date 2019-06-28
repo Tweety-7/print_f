@@ -12,38 +12,46 @@
 
 NAME = libftprintf.a
 
+SRCDIR = ./source/
+
+OBJDIR = ./objects/
+
 SRC = one.c ft_itoa_ll.c ft_int_base.c flag_check.c \
 	print_str.c print_num.c format_check.c print_d.c \
 	print_c_u.c print_o_x.c print_f.c str_format.c
 
-OMAKE = *.o
+OBJS = $(addprefix $(OBJDIR), $(SRC:.c=.o))
 
 HEAD = ./head
 
 LIBFT = libft/
 
-all: $(NAME)
+LIBFT_I = ./libft/libft.a
 
-$(NAME):
+GCC_FLAGS = gcc  -Wall -Wextra -Werror
+
+all: objects lft $(NAME)
+
+objects:
+	@mkdir -p $(OBJDIR)
+
+lft:
 	@make -C $(LIBFT)
-	@gcc -c $(SRC) -I$(HEAD) -Wall -Wextra -Werror 
+
+$(OBJDIR)%.o:$(SRCDIR)%.c
+	$(GCC_FLAGS) -I $(HEAD) -o $@ -c $<
+
+$(NAME):$(OBJS)
 	@cp libft/libft.a $(NAME)
-	@ar rc $(NAME) $(OMAKE)
+	@ar rc $(NAME) $(OBJS)
+	@ranlib $(NAME)
 
 clean:
-	@/bin/rm -f $(OMAKE)
+	@/bin/rm -rf $(OBJS) 
 	@make -C $(LIBFT) clean
 
 fclean: clean
 	@/bin/rm -f $(NAME)
-	@/bin/rm -f libft.a
 	@make -C $(LIBFT) fclean
 
 re: fclean all
-
-alah: 
-	@make -C $(LIBFT)
-	@gcc $(SRC) main.c -I $(HEAD)  -o $(NAME) -L. libft/libft.a #-Wall -Wextra -Werror
-	#@gcc  -g $(SRC) main.c -I $(HEAD)  -o $(NAME) -L. libft/libft.a #-Wall -Wextra -Werror
-
-rea: fclean alah
