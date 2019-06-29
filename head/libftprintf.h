@@ -34,21 +34,21 @@ typedef struct	s_print
 {
 	int			len;
 	int			width;
-	int			rr : 2;
-	int			space : 2;
-	int			plus : 2;
-	int			minus : 2;
-	int			zero : 2;
+	int			rr;
+	int			space;
+	int			plus;
+	int			minus;
+	int			zero;
 	int			prec;
-	int			prec_p : 1;
-	int			mod : 4;
-	int			net : 2;
-	int			leftzero : 2;
-	int			format : 5;
-	int			pr_x : 2;
-	int			pr_0 : 2;
-	int			pr_4erez_0 : 2;
-	int 		pr_5 : 2;
+	int			prec_p;
+	int			mod;
+	int			net;
+	int			leftzero;
+	int			format;
+	int			pr_x;
+	int			pr_0;
+	int			pr_4erez_0;
+	int			pr_5;
 }				t_print;
 
 const char		*ft_format(const char *format, va_list ap, t_print *pr);

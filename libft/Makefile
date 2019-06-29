@@ -83,7 +83,6 @@ SRCDIR = ./source/
 
 all: obj $(NAME) 
 
-
 obj:
 	@mkdir -p $(OBJDIR)
 
