@@ -50,7 +50,7 @@ const char	*ft_format(const char *format, va_list ap, t_print *pr)
 		return (format);
 	}
 	format = ft_flag_check(format, pr);
-	if ((*pr).minus == 1 && (*pr).space == 1 && (*pr).minus == 1)
+	if ((*pr).minus == 1 && (*pr).space == 1)
 		(*pr).space = 0;
 	format = ft_width_check(format, pr, ap);
 	format = ft_precision_check(format, pr, ap);
@@ -88,6 +88,7 @@ t_print		*ft_make_0(int len, t_print *pr_old)
 	(*pr).format = 0;
 	(*pr).pr_x = 0;
 	(*pr).pr_4erez_0 = 0;
+	(*pr).pr_5 = 0;
 	return (pr);
 }
 

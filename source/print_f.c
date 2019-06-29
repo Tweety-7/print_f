@@ -17,8 +17,11 @@ static char		*fstr_0(t_print *pr)
 	char		*str_0;
 
 	str_0 = ft_strnew((*pr).prec + 1);
-	ft_memset(str_0, '0', (*pr).prec + 1);
-	ft_memset(str_0, '.', 1);
+	if ((*pr).prec > 0)
+	{
+		ft_memset(str_0, '0', (*pr).prec + 1);
+		ft_memset(str_0, '.', 1);
+	}
 	return (str_0);
 }
 
@@ -28,7 +31,8 @@ static void		ft_prec_0(char *str_0, int prec, t_print *pr, int num_i)
 	{
 		ft_memset(str_0, '0', prec);
 		str_0[prec] = '\0';
-		(*pr).pr_4erez_0 = 1;
+		if ((*pr).pr_5 == 1)
+			(*pr).pr_4erez_0 = 1;
 	}
 	else
 		(*pr).pr_4erez_0 = 0;
@@ -54,12 +58,11 @@ static char		*ft_dtoa(double num, t_print *pr)
 		}
 		num_i = num + 0.5;
 		str_0 = ft_itoa_lu(num_i);
+		if (str_0[0] >= '5')
+			(*pr).pr_5 = 1;
 	}
 	ft_prec_0(str_0, prec, pr, num_i);
-	if (str_0[0] == '\0')
-		str = ft_strdup("\0");
-	else
-		str = ft_strjoin(".", str_0);
+	str = (str_0[0] == '\0') ? ft_strdup("\0") : ft_strjoin(".", str_0);
 	free(str_0);
 	return (str);
 }
@@ -108,7 +111,7 @@ const char		*ft_print_f(const char *format, va_list ap, t_print *pr)
 	str_i = num;
 	num = num - str_i;
 	str_2 = ft_dtoa(num, pr);
-	if ((*pr).pr_4erez_0 == 1)
+	if ((*pr).pr_4erez_0 == 1 && str_i % 2 == 1)
 		str_i += 1;
 	str = ft_itoa_lu(str_i);
 	str = ft_strjoin_new(str, str_2);
